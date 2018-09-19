@@ -53,7 +53,8 @@ namespace MoveArc.ViewModel
             Tasks.Add(new Task(()=> MoveShape(circle3)));
             Tasks.Add(new Task(()=> MoveShape(circle4)));
 
-            CreateRandomCircle(0, 200, 20);
+            CreateRandomCircle(50, 50, 20);
+            CreateRandomRectangle(50, 50, 20);
             SetRandomDirection();
             SetRandomPosition();
 
@@ -74,6 +75,18 @@ namespace MoveArc.ViewModel
                 ListShapes.Add(circle);
                 Tasks.Add(new Task(() => MoveShape(circle)));
 
+            }
+        }
+        public void CreateRandomRectangle(int count, int maxRadius, int maxSpeed)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Rectangle circle = new Rectangle(rnd.Next(10, maxRadius), rnd.Next(10, maxRadius))
+                {
+                    Speed = rnd.Next(1, maxSpeed)
+                };
+                ListShapes.Add(circle);
+                Tasks.Add(new Task(() => MoveShape(circle)));
             }
         }
         public void SetRandomDirection()
