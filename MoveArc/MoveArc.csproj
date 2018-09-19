@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Model\Circle.cs" />
     <Compile Include="Model\Direction.cs" />
+    <Compile Include="Model\Rectangle.cs" />
     <Compile Include="Model\Shape.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

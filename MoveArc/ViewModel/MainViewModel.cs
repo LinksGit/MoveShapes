@@ -42,8 +42,8 @@ namespace MoveArc.ViewModel
         {
             Circle circle1 = new Circle(100) {Speed = 5};
             Circle circle2 = new Circle(50) { Speed = 8 };
-            Circle circle3 = new Circle(25) { Speed = 11 };
-            Circle circle4 = new Circle(40) { Speed = 3 };
+            Rectangle circle3 = new Rectangle(10,20) { Speed = 11 };
+            Rectangle circle4 = new Rectangle(40, 40) { Speed = 3 };
             ListShapes.Add(circle1);
             ListShapes.Add(circle2);
             ListShapes.Add(circle3);
@@ -53,7 +53,7 @@ namespace MoveArc.ViewModel
             Tasks.Add(new Task(()=> MoveShape(circle3)));
             Tasks.Add(new Task(()=> MoveShape(circle4)));
 
-            CreateRandomCircle(35, 200, 20);
+            CreateRandomCircle(0, 200, 20);
             SetRandomDirection();
             SetRandomPosition();
 

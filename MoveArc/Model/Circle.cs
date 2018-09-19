@@ -3,6 +3,7 @@
     public class Circle: Shape
     {
         private int _radius;
+        public override string TypeName => "Circle";
 
         public int Radius   
         {

@@ -15,6 +15,7 @@ namespace MoveArc.Model
         private double _height;
         private double _speed;
 
+        public virtual string TypeName { get; }
         public double Speed
         {
             get => _speed;
