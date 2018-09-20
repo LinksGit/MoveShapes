@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 using MoveArc.Annotations;
 
 namespace MoveArc.Model
@@ -14,6 +15,18 @@ namespace MoveArc.Model
         private double _width;
         private double _height;
         private double _speed;
+        private Brush _color;
+
+        public Brush Color
+        {
+            get => _color;
+            set
+            {
+                if (Equals(value, _color)) return;
+                _color = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual string TypeName { get; }
         public double Speed

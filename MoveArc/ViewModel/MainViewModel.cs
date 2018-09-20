@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using MoveArc.Annotations;
 using MoveArc.Model;
 
@@ -40,61 +41,53 @@ namespace MoveArc.ViewModel
         
         public MainViewModel()
         {
-            Circle circle1 = new Circle(100) {Speed = 5};
-            Circle circle2 = new Circle(50) { Speed = 8 };
-            Rectangle circle3 = new Rectangle(10,20) { Speed = 11 };
-            Rectangle circle4 = new Rectangle(40, 40) { Speed = 3 };
-            ListShapes.Add(circle1);
-            ListShapes.Add(circle2);
-            ListShapes.Add(circle3);
-            ListShapes.Add(circle4);
-            Tasks.Add(new Task(()=> MoveShape(circle1)));
-            Tasks.Add(new Task(()=> MoveShape(circle2)));
-            Tasks.Add(new Task(()=> MoveShape(circle3)));
-            Tasks.Add(new Task(()=> MoveShape(circle4)));
-
-            CreateRandomCircle(50, 50, 20);
-            CreateRandomRectangle(50, 50, 20);
+            CreateRandomShape(typeof(Circle), 450, 80, 25);
+            CreateRandomShape(typeof(Rectangle), 450, 80, 25);
+            
             SetRandomDirection();
             SetRandomPosition();
-
+            SetRandomColor();
+            Tasks.Add(new Task(()=>MoveShapes()));
             foreach (var task in Tasks)
             {
                 task.Start();
             }
         }
 
-        public void CreateRandomCircle(int count, int maxRadius, int maxSpeed)
+        public void CreateRandomShape(Type typeShape, int count, int maxRadius, int maxSpeed)
         {
             for (int i = 0; i < count; i++)
             {
-                Circle circle = new Circle(rnd.Next(10, maxRadius))
+                Shape shape = null;
+                switch (typeShape)
                 {
-                    Speed = rnd.Next(1, maxSpeed)
-                };
-                ListShapes.Add(circle);
-                Tasks.Add(new Task(() => MoveShape(circle)));
-
+                    case Type _ when typeShape == typeof(Circle):
+                        shape = new Circle(rnd.Next(10, maxRadius));
+                        break;
+                    case Type _ when typeShape == typeof(Rectangle):
+                        shape = new Rectangle(rnd.Next(10, maxRadius), rnd.Next(10, maxRadius));
+                        break;
+                }
+                shape.Speed = rnd.Next(1, maxSpeed);
+                ListShapes.Add(shape);
+               // Tasks.Add(new Task(() => MoveShape(shape)));
             }
         }
-        public void CreateRandomRectangle(int count, int maxRadius, int maxSpeed)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                Rectangle circle = new Rectangle(rnd.Next(10, maxRadius), rnd.Next(10, maxRadius))
-                {
-                    Speed = rnd.Next(1, maxSpeed)
-                };
-                ListShapes.Add(circle);
-                Tasks.Add(new Task(() => MoveShape(circle)));
-            }
-        }
+       
         public void SetRandomDirection()
         {
             foreach (var shape in ListShapes)
             {
                 int index = rnd.Next(2) == 0 ? rnd.Next(3, 5) : rnd.Next(6, 8);
                 shape.Direction = (Direction)Enum.GetValues(typeof(Direction)).GetValue(index);
+            }
+        }
+
+        public void SetRandomColor()
+        {
+            foreach (var shape in ListShapes)
+            {
+                 shape.Color = new SolidColorBrush(Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255))); ;
             }
         }
         public void SetRandomPosition()
@@ -105,22 +98,30 @@ namespace MoveArc.ViewModel
                 shape.Y = rnd.Next((int)shape.Height, (int)HeightForm - (int)shape.Height);
             }
         }
-        async void MoveShape(Shape shape)
+
+        async void MoveShapes()
         {
             while (true)
             {
-                CheckCollision(shape);
-
-                if ((shape.Direction & Direction.Down) != 0)
-                    shape.Y += shape.Speed;
-                if ((shape.Direction & Direction.Up) != 0)
-                    shape.Y -= shape.Speed;
-                if ((shape.Direction & Direction.Left) != 0)
-                    shape.X -= shape.Speed;
-                if ((shape.Direction & Direction.Right) != 0)
-                    shape.X += shape.Speed;
+                foreach (Shape shape in ListShapes)
+                {
+                    MoveShape(shape);
+                }
                 await Task.Delay(1);
             }
+        }
+        void MoveShape(Shape shape)
+        {
+            CheckCollision(shape);
+
+            if ((shape.Direction & Direction.Down) != 0)
+                shape.Y += shape.Speed;
+            if ((shape.Direction & Direction.Up) != 0)
+                shape.Y -= shape.Speed;
+            if ((shape.Direction & Direction.Left) != 0)
+                shape.X -= shape.Speed;
+            if ((shape.Direction & Direction.Right) != 0)
+                shape.X += shape.Speed;
         }
 
         void CheckCollision(Shape shape)

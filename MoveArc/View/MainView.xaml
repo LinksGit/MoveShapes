@@ -7,10 +7,10 @@
         Title="MainWindow" WindowState="Maximized" Height="{Binding HeightForm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="{Binding WidthForm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
     <Window.Resources>
         <ControlTemplate x:Key="CircleTemplate">
-            <Ellipse Margin="{Binding Location}" Width="{Binding Width}" Height="{Binding Height}" Stroke="Black" StrokeThickness="3"/>
+            <Ellipse Margin="{Binding Location}" Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}" StrokeThickness="3"/>
         </ControlTemplate>
         <ControlTemplate x:Key="RectangleTemplate">
-            <Rectangle Margin="{Binding Location}"  Width="{Binding Width}" Height="{Binding Height}" Stroke="Black" StrokeThickness="3"/>
+            <Rectangle Margin="{Binding Location}"  Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}" StrokeThickness="3"/>
         </ControlTemplate>
     </Window.Resources>
     <Grid>
